@@ -57,7 +57,22 @@ module.exports = {
 		        test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
-					use: ['css-loader', 'sass-loader']
+                    // Sourcemaps for scss files
+                    // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/438
+					use: [
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        }
+                    ]
 				})
 		    },
 			{
