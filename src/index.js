@@ -3,4 +3,6 @@
 import { foo } from 'foo';
 import 'styles/app.scss';
 
-console.log(foo('one'));
+document
+    .querySelector('#app')
+    .innerHTML = foo(`I come from JS`);

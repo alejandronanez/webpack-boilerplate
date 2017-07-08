@@ -1,15 +1,23 @@
 const webpack = require('webpack');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
 
+const SOURCE_PATH = path.join(__dirname, 'src');
+const BUILD_PATH = path.join(__dirname, 'dist');
+
+// https://github.com/webpack-contrib/extract-text-webpack-plugin
 const extractSass = new ExtractTextPlugin({
 	filename: '[name].css',
 	disable: process.env.NODE_ENV === 'development',
 	allChunks: true
 });
 
-const SOURCE_PATH = path.join(__dirname, 'src');
-const BUILD_PATH = path.join(__dirname, 'dist');
+// https://github.com/jantimon/html-webpack-plugin
+const htmlPlugin = new HTMLWebpackPlugin({
+	inject: true,
+	template: path.join(SOURCE_PATH, 'index.html')
+});
 
 module.exports = {
 	entry: {
@@ -20,7 +28,8 @@ module.exports = {
 		filename: '[name].js'
 	},
 	plugins: [
-        extractSass
+        extractSass,
+        htmlPlugin
 	],
     resolve: {
         modules: [
@@ -31,6 +40,9 @@ module.exports = {
             // so we can do: import 'styles/path/to/foo.scss
             styles: path.join(SOURCE_PATH, '/styles')
         }
+    },
+    devServer: {
+        contentBase: SOURCE_PATH
     },
 	module: {
 		rules: [
@@ -45,7 +57,22 @@ module.exports = {
 		        test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
 					fallback: 'style-loader',
-					use: ['css-loader', 'sass-loader']
+                    // Sourcemaps for scss files
+                    // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/438
+					use: [
+                        {
+                            loader: 'css-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        },
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: true
+                            }
+                        }
+                    ]
 				})
 		    },
 			{
