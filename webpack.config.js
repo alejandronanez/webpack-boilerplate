@@ -28,7 +28,7 @@ module.exports = {
 		filename: '[name].js'
 	},
 	plugins: [
-        // extractSass,
+        extractSass,
         htmlPlugin
 	],
     resolve: {
@@ -42,7 +42,8 @@ module.exports = {
         }
     },
     devServer: {
-        contentBase: SOURCE_PATH
+        contentBase: SOURCE_PATH,
+        stats: 'errors-only'
     },
 	module: {
 		rules: [
@@ -55,12 +56,6 @@ module.exports = {
 			},
 			{
 		        test: /\.scss$/,
-                use: [
-                    { loader: 'style-loader' },
-                    { loader: 'css-loader' },
-                    { loader: 'sass-loader' }
-                ]
-                /**
 				use: extractSass.extract({
 					fallback: 'style-loader',
                     // Sourcemaps for scss files
@@ -80,7 +75,6 @@ module.exports = {
                         }
                     ]
 				})
-                **/
 		    },
 			{
                 test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
