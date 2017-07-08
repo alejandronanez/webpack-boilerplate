@@ -28,7 +28,7 @@ module.exports = {
 		filename: '[name].js'
 	},
 	plugins: [
-        extractSass,
+        // extractSass,
         htmlPlugin
 	],
     resolve: {
@@ -55,7 +55,13 @@ module.exports = {
 			},
 			{
 		        test: /\.scss$/,
-				use: ExtractTextPlugin.extract({
+                use: [
+                    { loader: 'style-loader' },
+                    { loader: 'css-loader' },
+                    { loader: 'sass-loader' }
+                ]
+                /**
+				use: extractSass.extract({
 					fallback: 'style-loader',
                     // Sourcemaps for scss files
                     // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/438
@@ -74,6 +80,7 @@ module.exports = {
                         }
                     ]
 				})
+                **/
 		    },
 			{
                 test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
