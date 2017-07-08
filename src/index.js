@@ -3,4 +3,5 @@
 import { foo } from 'foo';
 import 'styles/app.scss';
 
-console.log(foo('one'));
+const h1Element = document.querySelector('#app h1');
+h1Element.innerHTML = foo('I come from js');
